@@ -41,6 +41,7 @@ struct sugov_tunables {
 #ifdef CONFIG_SCHED_FFSI_GLUE
 	bool 			fb_legacy;
 #endif
+	bool			iowait_boost_enable;
 };
 
 struct sugov_policy {
@@ -601,6 +602,11 @@ static void sugov_iowait_boost(struct sugov_cpu *sg_cpu, u64 time,
 			       unsigned int flags)
 {
 	bool set_iowait_boost = flags & SCHED_CPUFREQ_IOWAIT;
+
+	struct sugov_policy *sg_policy = sg_cpu->sg_policy;
+
+	if (!sg_policy->tunables->iowait_boost_enable)
+		return;
 
 	/* Reset boost if the CPU appears to have been idle enough */
 	if (sg_cpu->iowait_boost &&
@@ -1176,6 +1182,28 @@ static ssize_t fb_legacy_store(struct gov_attr_set *attr_set, const char *buf,
 }
 #endif
 
+static ssize_t iowait_boost_enable_show(struct gov_attr_set *attr_set,
+					char *buf)
+{
+	struct sugov_tunables *tunables = to_sugov_tunables(attr_set);
+
+	return sprintf(buf, "%u\n", tunables->iowait_boost_enable);
+}
+
+static ssize_t iowait_boost_enable_store(struct gov_attr_set *attr_set,
+					 const char *buf, size_t count)
+{
+	struct sugov_tunables *tunables = to_sugov_tunables(attr_set);
+	bool enable;
+
+	if (kstrtobool(buf, &enable))
+		return -EINVAL;
+
+	tunables->iowait_boost_enable = enable;
+
+	return count;
+}
+
 static struct governor_attr hispeed_load = __ATTR_RW(hispeed_load);
 static struct governor_attr hispeed_freq = __ATTR_RW(hispeed_freq);
 static struct governor_attr rtg_boost_freq = __ATTR_RW(rtg_boost_freq);
@@ -1183,6 +1211,7 @@ static struct governor_attr pl = __ATTR_RW(pl);
 #ifdef CONFIG_SCHED_FFSI_GLUE
 static struct governor_attr fb_legacy = __ATTR_RW(fb_legacy);
 #endif
+static struct governor_attr iowait_boost_enable = __ATTR_RW(iowait_boost_enable);
 
 static struct attribute *sugov_attributes[] = {
 	&up_rate_limit_us.attr,
@@ -1194,6 +1223,7 @@ static struct attribute *sugov_attributes[] = {
 #ifdef CONFIG_SCHED_FFSI_GLUE
 	&fb_legacy.attr,
 #endif
+	&iowait_boost_enable.attr,
 	NULL
 };
 
@@ -1313,6 +1343,7 @@ static void sugov_tunables_save(struct cpufreq_policy *policy,
 #ifdef CONFIG_SCHED_FFSI_GLUE
 	cached->fb_legacy = tunables->fb_legacy;
 #endif
+	cached->iowait_boost_enable = tunables->iowait_boost_enable;
 }
 
 static void sugov_tunables_free(struct sugov_tunables *tunables)
@@ -1341,6 +1372,7 @@ static void sugov_tunables_restore(struct cpufreq_policy *policy)
 #ifdef CONFIG_SCHED_FFSI_GLUE
 	tunables->fb_legacy = cached->fb_legacy;
 #endif
+	tunables->iowait_boost_enable = cached->iowait_boost_enable;
 }
 
 static int sugov_init(struct cpufreq_policy *policy)
@@ -1394,6 +1426,7 @@ static int sugov_init(struct cpufreq_policy *policy)
 	tunables->fb_legacy = false;
 	sg_policy->be_stochastic = false;
 #endif
+	tunables->iowait_boost_enable = 0;
 
 	switch (policy->cpu) {
 	default:
