@@ -459,7 +459,7 @@ KBUILD_AFLAGS   := -D__ASSEMBLY__
 KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common -fshort-wchar \
 		   -Werror-implicit-function-declaration \
-		   -Wno-format-security \
+		   -Werror=return-type -Wno-format-security \
 		   -std=gnu89 \
 		   -mcpu=cortex-a77.cortex-a55 -mtune=cortex-a77.cortex-a55 -fdiagnostics-color=always -ftree-vectorize -pipe \
 		   -ffast-math -Wno-unused-variable -Wno-unused-function -Wno-unused-label \
