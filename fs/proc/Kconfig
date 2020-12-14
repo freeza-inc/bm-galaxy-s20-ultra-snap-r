@@ -112,6 +112,10 @@ config PROC_MAGISK_HIDE_MOUNT
 	default n
 
 
+config PROC_MAGISK_HIDE_MOUNT
+	bool "Hide magisk mounts for IsolatedService"
+	default n
+
 config PROC_UID
 	bool "Include /proc/uid/ files"
 	depends on PROC_FS && RT_MUTEXES
