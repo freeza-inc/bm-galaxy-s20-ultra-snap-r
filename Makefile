@@ -444,7 +444,15 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -fno-strict-aliasing -fno-common -fshort-wchar \
 		   -Werror-implicit-function-declaration \
 		   -Wno-format-security \
-		   -std=gnu89
+		   -std=gnu89 \
+		   -mcpu=cortex-a77.cortex-a55 -mtune=cortex-a77.cortex-a55 -fdiagnostics-color=always -ftree-vectorize -pipe \
+		   -ffast-math -Wno-unused-variable -Wno-unused-function -Wno-unused-label \
+		   -Wno-logical-not-parentheses -Wno-duplicate-decl-specifier -ftree-vectorize \
+		   -Wno-unused-const-variable -funsafe-math-optimizations -Wno-array-bounds -Wno-incompatible-pointer-types \
+		   -mcpu=kryo -mtune=kryo -Wno-tautological-compare -Wno-parentheses \
+		   -Wno-nonnull -Wno-attributes -Wno-sizeof-pointer-memaccess \
+		   -Wformat=0 -Wno-address-of-packed-member -Wno-enum-compare -Wno-unused-result -Wno-pointer-to-int-cast \
+		   -Wno-sequence-point -Wno-unused-value -Wno-uninitialized
 KBUILD_CPPFLAGS := -D__KERNEL__
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
