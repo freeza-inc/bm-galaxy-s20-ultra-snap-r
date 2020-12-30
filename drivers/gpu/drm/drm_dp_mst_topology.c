@@ -36,8 +36,9 @@
 #include <drm/drm_atomic.h>
 #include <drm/drm_atomic_helper.h>
 
-#ifdef CONFIG_SEC_DISPLAYPORT
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 #include <linux/secdp_logger.h>
+#endif
 
 #ifdef DRM_DEBUG_KMS
 #undef DRM_DEBUG_KMS
@@ -47,7 +48,6 @@
 #ifdef DRM_ERROR
 #undef DRM_ERROR
 #define DRM_ERROR	pr_err
-#endif
 #endif
 
 /**

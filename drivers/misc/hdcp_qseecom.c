@@ -26,7 +26,7 @@
 
 #include "qseecom_kernel.h"
 
-#ifdef CONFIG_SEC_DISPLAYPORT_ENG
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 #include <linux/secdp_logger.h>
 #endif
 

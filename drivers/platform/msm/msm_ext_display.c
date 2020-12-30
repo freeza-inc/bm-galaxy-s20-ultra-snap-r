@@ -17,14 +17,14 @@
 #include <linux/msm_ext_display.h>
 #include <linux/extcon-provider.h>
 
-#ifdef CONFIG_SEC_DISPLAYPORT
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 #include <linux/secdp_logger.h>
+#endif
 #ifdef CONFIG_SWITCH
 #include <linux/switch.h>
 static struct switch_dev switch_secdp_audio = {
 	.name = "ch_hdmi_audio",
 };
-#endif
 #endif
 
 struct msm_ext_disp_list {

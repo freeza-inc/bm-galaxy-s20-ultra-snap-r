@@ -19,7 +19,9 @@
 #include <linux/time.h>
 #include <linux/uaccess.h>
 #include <linux/sched/clock.h>
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 #include <linux/secdp_logger.h>
+#endif
 
 #include "secdp_unit_test.h"
 
@@ -30,7 +32,9 @@
 
 static char log_buf[BUF_SIZE];
 static unsigned int g_curpos;
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 static int is_secdp_logger_init;
+#endif
 static int is_buf_full;
 static int log_max_count = -1;
 
@@ -50,9 +54,12 @@ void dp_logger_print_date_time(void)
 		tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
 		nsec / 1000000);
 
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 	secdp_logger_print("%s\n", tmp);
+#endif
 }
 
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 /* set max log count, if count is -1, no limit */
 void secdp_logger_set_max_count(int count)
 {
@@ -185,3 +192,4 @@ int secdp_logger_init(void)
 
 	return 0;
 }
+#endif
