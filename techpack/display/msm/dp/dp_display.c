@@ -2758,7 +2758,9 @@ static void secdp_ccic_connect_init(struct dp_display_private *dp,
 
 	secdp_clear_branch_info(dp);
 	secdp_clear_link_status_update_cnt(dp->link);
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 	secdp_logger_set_max_count(300);
+#endif
 
 #ifdef CONFIG_SEC_DISPLAYPORT_BIGDATA
 	if (connect) {
@@ -2874,7 +2876,9 @@ static int secdp_ccic_noti_cb(struct notifier_block *nb, unsigned long action,
 		}
 
 		if (noti.sub1 == CCIC_NOTIFY_HIGH) {
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 			secdp_logger_set_max_count(300);
+#endif
 			atomic_set(&dp->sec.hpd, 1);
 			dp->hpd->hpd_high = true;
 		} else/* if (noti.sub1 == CCIC_NOTIFY_LOW)*/ {
@@ -5501,7 +5505,9 @@ static int dp_display_probe(struct platform_device *pdev)
 
 #ifdef CONFIG_SEC_DISPLAYPORT
 	g_secdp_priv = dp;
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 	secdp_logger_init();
+#endif
 	atomic_set(&dp->notification_status, 0);
 #endif
 

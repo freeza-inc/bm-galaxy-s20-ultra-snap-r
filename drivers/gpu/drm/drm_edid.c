@@ -38,7 +38,7 @@
 #include <drm/drm_encoder.h>
 #include <drm/drm_displayid.h>
 #include <drm/drm_scdc_helper.h>
-#ifdef CONFIG_SEC_DISPLAYPORT
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 #include <linux/secdp_logger.h>
 #endif
 
@@ -1567,7 +1567,7 @@ drm_do_probe_ddc_edid(void *data, u8 *buf, unsigned int block, size_t len)
 		}
 	} while (ret != xfers && --retries);
 
-#ifdef CONFIG_SEC_DISPLAYPORT
+#ifdef CONFIG_SEC_DISPLAYPORT_LOGGER
 	if (len == EDID_LENGTH) {
 		print_hex_dump(KERN_DEBUG, "secdp_EDID: ", DUMP_PREFIX_NONE, 16, 1,
 			buf, len, false);
