@@ -2,7 +2,7 @@
 /*
  * Copyright (c) 2013-2019, The Linux Foundation. All rights reserved.
  */
-
+#ifdef CONFIG_CORESIGHT
 #include <linux/coresight.h>
 #include <linux/of.h>
 
@@ -465,3 +465,4 @@ err:
 	of_node_put(node);
 	return ret;
 }
+#endif
