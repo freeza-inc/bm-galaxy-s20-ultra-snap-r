@@ -238,7 +238,6 @@ endif
 #TZIC
 obj-y  += security/samsung/tzic/
 
-<<<<<<< HEAD
 # KUnit
 
 # GNSS
