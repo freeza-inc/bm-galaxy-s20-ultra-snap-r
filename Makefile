@@ -467,6 +467,7 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
 		   -Wno-unused-const-variable -funsafe-math-optimizations -Wno-array-bounds -Wno-incompatible-pointer-types \
 		   -mcpu=kryo -mtune=kryo -Wno-tautological-compare -Wno-parentheses \
 		   -Wno-nonnull -Wno-attributes -Wno-sizeof-pointer-memaccess \
+		   -Wno-unsequenced -Wno-unused-variable -Wno-bool-operation \
 		   -Wformat=0 -Wno-address-of-packed-member -Wno-enum-compare -Wno-unused-result -Wno-pointer-to-int-cast \
 		   -Wno-sequence-point -Wno-unused-value -Wno-uninitialized
 KBUILD_CPPFLAGS := -D__KERNEL__
