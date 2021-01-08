@@ -1262,7 +1262,7 @@ static void gc_worker(struct work_struct *work)
 			}
 			// SEC_PRODUCT_FEATURE_KNOX_SUPPORT_NPA }
 #endif
-
+			}
 			if (nf_conntrack_max95 == 0 || gc_worker_skip_ct(tmp))
 				continue;
 
