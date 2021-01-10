@@ -6,3 +6,4 @@ config PERF_MGR
         help
             samsung performance manager driver
 endmenu
+
