@@ -9041,8 +9041,8 @@
 					net_boost,label = "UFS";
 					net_boost,node = [00];
 					net_boost,sysnode = "/sys/class/scsi_host/host0/transferred_cnt";
-					net_boost,table_size = <0x1>;
-					net_boost,table = <0x320 0x0 0x0 0xc4e00 0x0 0x0 0x0 0x0 0x0 0x0>;
+					net_boost,table_size = <0x2>;
+					net_boost,table = <0x320 0x0 0x0 0xc4e00 0x0 0x0 0x0 0x0 0x0 0x0 0x4b0 0x2b5c00 0x0 0x0 0x0 0x0 0x0 0x0 0x0 0x0>;
 				};
 
 				boot_device@5 {
@@ -10365,6 +10365,7 @@
 				sync-reportrate-120 = [59 00];
 				support_fod;
 				support_vrr;
+				support_open_short_test;
 			};
 
 			st_fts@49 {
@@ -10662,6 +10663,7 @@
 					battery,wireless_charger_name = "mfc-charger";
 					battery,wc_cover_rpp = <0x44>;
 					battery,oc_fod1 = <0x44c>;
+					battery,tx_gear_min_op_freq_delay = <0xfa0>;
 					battery,wireless20_vout_list = <0x9 0x9 0x9>;
 					battery,wireless20_vrect_list = <0xa 0xb 0xb>;
 					battery,wireless20_max_power_list = <0x2 0x3 0x3>;
@@ -11134,6 +11136,7 @@
 					battery,wireless_charger_name = "mfc-charger";
 					battery,wc_cover_rpp = <0x44>;
 					battery,oc_fod1 = <0x44c>;
+					battery,tx_gear_min_op_freq_delay = <0xfa0>;
 					battery,wireless20_vout_list = <0x9 0x9 0x9>;
 					battery,wireless20_vrect_list = <0xa 0xb 0xb>;
 					battery,wireless20_max_power_list = <0x2 0x3 0x3>;
