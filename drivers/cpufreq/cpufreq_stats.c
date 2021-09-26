@@ -30,6 +30,7 @@ struct cpufreq_stats {
 static void cpufreq_stats_update(struct cpufreq_stats *stats)
 {
 	unsigned long long cur_time = get_jiffies_64();
+	unsigned long flags;
 	unsigned long long time = cur_time;
 
 	spin_lock_irqsave(&cpufreq_stats_lock, flags);
