@@ -2391,9 +2391,7 @@ int ss_panel_on_pre(struct samsung_display_driver_data *vdd)
 
 	if (!ss_panel_attach_get(vdd)) {
 		ss_read_fw_up_debug_partition();
-#if defined(CONFIG_PANEL_S6TUUM3_AMSA24VU01_WQXGA)
-		BUG_ON(1);
-#endif
+
 		LCD_ERR("ss_panel_attach_get NG\n");
 		return false;
 	}
@@ -2496,6 +2494,11 @@ int ss_panel_on_pre(struct samsung_display_driver_data *vdd)
 		LCD_INFO("panel dbg: %x %x %x %x %x\n", rddpm, rddsm, errfg, dsierror, protocol_err);
 
 		vdd->read_panel_status_from_lk = 1;
+	}
+
+	if (vdd->skip_read_on_pre) {
+		LCD_INFO("Skip read operation in on_pre\n");
+		goto skip_read;
 	}
 
 	/* Module info */
@@ -2682,6 +2685,7 @@ int ss_panel_on_pre(struct samsung_display_driver_data *vdd)
 		}
 	}
 
+skip_read:
 	if (!IS_ERR_OR_NULL(vdd->panel_func.samsung_panel_on_pre))
 		vdd->panel_func.samsung_panel_on_pre(vdd);
 
@@ -4305,6 +4309,9 @@ static void ss_panel_parse_dt(struct samsung_display_driver_data *vdd)
 
 	vdd->dtsi_data.panel_lpm_enable = of_property_read_bool(np, "samsung,panel-lpm-enable");
 	LCD_ERR("alpm enable %s\n", vdd->dtsi_data.panel_lpm_enable ? "enabled" : "disabled");
+
+	vdd->skip_read_on_pre = of_property_read_bool(np, "samsung,skip_read_on_pre");
+	LCD_ERR("Skip read on pre %s\n", vdd->skip_read_on_pre ? "enabled" : "disabled");
 
 	/* Set HALL IC */
 	vdd->support_hall_ic  = of_property_read_bool(np, "samsung,mdss_dsi_hall_ic_enable");
