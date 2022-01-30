@@ -89,6 +89,8 @@
 #define ARM_LPAE_PTE_TYPE_TABLE		3
 #define ARM_LPAE_PTE_TYPE_PAGE		3
 
+#define ARM_LPAE_PTE_ADDR_MASK		GENMASK_ULL(47,12)
+
 #define ARM_LPAE_PTE_SH_MASK		(((arm_lpae_iopte)0x3) << 8)
 #define ARM_LPAE_PTE_NSTABLE		(((arm_lpae_iopte)1) << 63)
 #define ARM_LPAE_PTE_XN			(((arm_lpae_iopte)3) << 53)
@@ -238,6 +240,15 @@ typedef u64 arm_lpae_iopte;
 #define IOPTE_RESERVED_MASK ((BOTTOM_IGNORED_MASK << BOTTOM_IGNORED_SHIFT) | \
 			     (TOP_IGNORED_MASK << TOP_IGNORED_SHIFT))
 
+static arm_lpae_iopte paddr_to_iopte(phys_addr_t paddr,
+				     struct arm_lpae_io_pgtable *data)
+{
+	arm_lpae_iopte pte = paddr;
+
+	/* Of the bits which overlap, either 51:48 or 15:12 are always RES0 */
+	return (pte | (pte >> (48 - 12))) & ARM_LPAE_PTE_ADDR_MASK;
+}
+
 static arm_lpae_iopte iopte_val(arm_lpae_iopte table_pte)
 {
 	return table_pte & ~IOPTE_RESERVED_MASK;
@@ -384,7 +395,7 @@ static void __arm_lpae_init_pte(struct arm_lpae_io_pgtable *data,
 		pte |= ARM_LPAE_PTE_TYPE_BLOCK;
 
 	pte |= ARM_LPAE_PTE_AF | ARM_LPAE_PTE_SH_OS;
-	pte |= pfn_to_iopte(paddr >> data->pg_shift, data);
+	pte |= paddr_to_iopte(paddr, data);
 
 	if (flush)
 		__arm_lpae_set_pte(ptep, pte, &data->iop.cfg);
@@ -416,7 +427,7 @@ static int arm_lpae_init_pte(struct arm_lpae_io_pgtable *data,
 static arm_lpae_iopte arm_lpae_install_table(arm_lpae_iopte *table,
 					     arm_lpae_iopte *ptep,
 					     arm_lpae_iopte curr,
-					     struct arm_lpae_io_pgtable *data)
+					     struct arm_lpae_io_pgtable *data,
 					     int ref_count)
 {
 	arm_lpae_iopte old, new;
